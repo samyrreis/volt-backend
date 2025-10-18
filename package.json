@@ -1,16 +1,14 @@
 {
   "name": "volt-backend",
   "version": "1.0.0",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "build": "echo 'No build needed for backend'"
+    "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "cors": "^2.8.5",
-    "resend": "^4.0.0",
-    "zod": "^3.24.2"
+    "resend": "^2.0.0"
   }
 }
+
