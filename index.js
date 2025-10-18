@@ -52,34 +52,6 @@ var MemStorage = class {
 };
 var storage = new MemStorage();
 
-// shared/schema.ts
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
-var users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull()
-});
-var contacts = pgTable("contacts", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  message: text("message").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull()
-});
-var insertUserSchema = createInsertSchema(users).omit({
-  id: true
-});
-var insertContactSchema = createInsertSchema(contacts).omit({
-  id: true,
-  createdAt: true
-}).extend({
-  name: z.string().min(1, "Nome \xE9 obrigat\xF3rio").min(2, "Nome deve ter pelo menos 2 caracteres"),
-  email: z.string().min(1, "E-mail \xE9 obrigat\xF3rio").email("Formato de e-mail inv\xE1lido"),
-  message: z.string().min(1, "Mensagem \xE9 obrigat\xF3ria").min(10, "Mensagem deve ter pelo menos 10 caracteres")
-});
 
 // server/routes.ts
 import { z as z2 } from "zod";
