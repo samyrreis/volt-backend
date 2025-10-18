@@ -6,8 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 app.post("/api/contact", async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -16,8 +14,12 @@ app.post("/api/contact", async (req, res) => {
   }
 
   try {
+    // 🔥 instanciamos o Resend AQUI dentro, depois que as variáveis já estão disponíveis
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "contato@voltbrasil.app";
+
     const data = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || "Volt Contact <contato@voltbrasil.app>",
+      from: fromEmail,
       to: "contato@voltbrasil.app",
       subject: `Nova mensagem de contato - ${name}`,
       html: `
@@ -42,7 +44,5 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+app.get("/", (req, res
+
